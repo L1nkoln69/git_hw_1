@@ -1,17 +1,15 @@
 def parse(query: str) -> dict:
     try:
-        x = query.split('?', 1)[1].lstrip()
+        x = query.split('?')[1].lstrip()
         if x is None:
             return {}
         elif x is not True:
             some_dict = {}
             new_str = x.split('&')
             for i in new_str:
-                some_str = i.split('=')
-                if len(some_str) > 1:
-                    some_dict333333333[f'{some_str[0]}'] = f'{some_str[1]}'
-                else:
-                    pass
+                if '=' in i:
+                    k, v = i.split('=')
+                    some_dict.update({k: v})
             return some_dict
         else:
             return {}
@@ -30,3 +28,6 @@ print(parse('https://example.com/path/to/page?name=ferret&color=purple') == {'na
 print(parse('https://example.com/path/to/page?name=ferret&color=purple&age=2') ==
       {'name': 'ferret', 'color': 'purple', 'age': '2'})
 print(parse('http://exam') == {})
+print(parse('http://example.com/?') == {})
+print(parse('http://example.com/?name&dfgdfg') == {})
+print(parse('http://example.com/?name=Dima') == {'name': 'Dima'})
